@@ -1,0 +1,48 @@
+
+### 3. `src/database.sql`
+
+Este arquivo conterá o código SQL que você forneceu para criar o banco de dados e tabelas, além das inserções e consultas.
+
+```sql
+DROP DATABASE IF EXISTS recomendaçãoFilmes;
+CREATE DATABASE recomendaçãoFilmes;
+USE recomendaçãoFilmes;
+
+CREATE TABLE Generos (
+    id_genero INT PRIMARY KEY AUTO_INCREMENT,
+    descricao VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE Filmes (
+    filmesId INT PRIMARY KEY AUTO_INCREMENT,
+    titulo VARCHAR(255) NOT NULL,
+    ano_lancamento YEAR,
+    id_genero INT,
+    FOREIGN KEY (id_genero) REFERENCES Generos(id_genero)
+);
+
+CREATE TABLE Usuarios (
+    id_usuario INT PRIMARY KEY AUTO_INCREMENT,
+    nome_usuario VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE Avaliacoes (
+    id_usuario INT,
+    id_filme INT,
+    avaliacao INT CHECK (avaliacao >= 1 AND avaliacao <= 5),
+    PRIMARY KEY (id_usuario, id_filme),
+    FOREIGN KEY (id_usuario) REFERENCES Usuarios(id_usuario),
+    FOREIGN KEY (id_filme) REFERENCES Filmes(filmesId)
+);
+
+INSERT INTO Generos (descricao) VALUES ('ação'), ('comédia'), ('drama'), ('romance'), ('desenho animado');
+INSERT INTO Usuarios (nome_usuario) VALUES ('Usuario 1'), ('Usuario 2');
+INSERT INTO Filmes (titulo, ano_lancamento, id_genero) VALUES ('bad boys', 1995, 1), ('aladdin', 2019, 4), ('kung fu panda', 2008, 5);
+INSERT INTO Avaliacoes (id_usuario, id_filme, avaliacao) VALUES (1, 1, 5), (1, 2, 4), (2, 1, 3), (2, 3, 4);
+
+SELECT F.titulo, AVG(A.avaliacao) AS media_avaliacao
+FROM Filmes F
+JOIN Avaliacoes A ON F.id_filme = A.id_filme
+GROUP BY F.id_filme
+ORDER BY media_avaliacao DESC
+LIMIT 5;
