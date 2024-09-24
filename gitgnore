@@ -1,0 +1,15 @@
+# Logs
+*.log
+
+# Arquivos de banco de dados
+*.sqlite
+*.db
+
+# Configurações do sistema operacional
+.DS_Store
+
+# Python (caso haja scripts)
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
