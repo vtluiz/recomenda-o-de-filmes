@@ -1,0 +1,4 @@
+/src
+    /database.sql        # Script SQL para criar as tabelas e inserções
+.gitignore
+README.md
